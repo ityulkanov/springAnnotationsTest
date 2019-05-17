@@ -2,22 +2,36 @@ package ityulkanov.springdemo;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
 @Data
 @Component
+@Scope("prototype")
 public class TennisCoach implements Coach {
-    private  FortuneService fortuneService;
-  /*  @Autowired
-    public TennisCoach(FortuneService theFortuneService) {
-        fortuneService = theFortuneService;
-    }*/
 
     @Autowired
-    public void setFortuneService (FortuneService fortuneService) {
-        System.out.println("Inside setter injection");
-        this.fortuneService = fortuneService;
+    @Qualifier("randomFortuneService")
+    private  FortuneService fortuneService;
+
+    // define my init method
+    @PostConstruct
+    public void doMyStartupStuff() {
+        System.out.println("TEnnis coach insode of startup method");
+    }
+    @PreDestroy
+    public  void doMyCleanupStuff(){
+        System.out.println("Inside the end method");
     }
 
+    @Autowired
+    public void doSomeCrazyStuff() {
+        System.out.println(" crzry stuff");
+    }
     @Override
     public String getDailyWorkout() {
         return "Here is a message from Tennis Coach";
@@ -28,3 +42,4 @@ public class TennisCoach implements Coach {
         return fortuneService.getFortune();
     }
 }
+

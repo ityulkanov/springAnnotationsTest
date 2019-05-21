@@ -1,11 +1,20 @@
 package ityulkanov.springdemo;
 
+import lombok.Data;
+import org.springframework.beans.factory.annotation.Value;
+@Data
 public class SwimCoach implements Coach {
 
     private FortuneService fortuneService;
+    @Value("${foo.email}")
+    private String email;
 
-    public SwimCoach(FortuneService fortuneService) {
-        fortuneService = fortuneService;
+    @Value("${foo.team}")
+    private String team;
+
+    public SwimCoach(FortuneService theFortuneService) {
+        fortuneService = theFortuneService;
+
     }
     @Override
     public String getDailyWorkout() {

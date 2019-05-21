@@ -1,17 +1,29 @@
 package ityulkanov.springdemo;
 
-import org.springframework.stereotype.Component;
+import lombok.Data;
+import org.springframework.beans.factory.annotation.Value;
 
-@Component
+@Data
 public class BasketBallCoach implements Coach {
-    @Override
-    public String getDailyFortune() {
-        return null;
-    }
 
+    private FortuneService fortuneService;
+    @Value("${foo.timesHit}")
+    private String timesHit;
+
+    @Value("${foo.name}")
+    private String name;
+
+    public BasketBallCoach(FortuneService theFortuneService) {
+        fortuneService = theFortuneService;
+
+    }
     @Override
     public String getDailyWorkout() {
-        return "Here is a message from THe Basketball coach";
+        return "Swim 1000 meter as a warmup";
+    }
+
+    @Override
+    public String getDailyFortune() {
+        return fortuneService.getFortune();
     }
 }
-
